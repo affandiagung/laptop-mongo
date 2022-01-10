@@ -10,4 +10,4 @@ router.put("/:brandId", updatedBrand)
 router.delete("/:brandId",deleteBrand )
 
 
-module.exports = router
+module.exports = router  
