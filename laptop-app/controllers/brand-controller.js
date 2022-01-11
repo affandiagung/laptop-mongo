@@ -35,6 +35,7 @@ module.exports = {
     }
   },
   getBrands : async (req,res) =>{
+    
     try {
       const brands = await Brand.findAll({
         limit : 10,

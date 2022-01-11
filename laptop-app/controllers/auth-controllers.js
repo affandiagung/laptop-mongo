@@ -66,7 +66,7 @@ module.exports = {
         const {error} = schema.validate({...req.body})
         if (error){
           res.status(400).json({
-            status : "Bad Request",
+            status : "Bad Request aja",
             message : error.message
           })
         }
@@ -91,7 +91,7 @@ module.exports = {
         const token = jwt.sign({
           email : user.email,
           id : user.id
-        },process.env.SECRET_TOKEN, {expiresIn : 60*60*12});
+        },process.env.SECRET_TOKEN, {expiresIn : 600*60*12});
 
         res.status(200).json({
           status : "Success",
