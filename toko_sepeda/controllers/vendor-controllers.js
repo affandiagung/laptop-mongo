@@ -1,4 +1,3 @@
-const express = require('express')
 const Joi =require('joi') //untuk validasi data
 const {Vendor} = require('../models') //mengambil model 
 
@@ -148,6 +147,7 @@ module.exports = {
           id :vendorId
         }
       })
+      
       if(!vendor) {
         return res.status(404).json({
           status  :"Data gagal dihapus",
@@ -162,7 +162,10 @@ module.exports = {
         result : {}
       })
     } catch (error) {
-      return res.status(500)
+      return res.status(500).json({
+        status : "error",
+        message : error.message
+      })
     }
   }
 }
