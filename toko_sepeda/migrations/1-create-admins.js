@@ -1,4 +1,7 @@
 'use strict';
+
+const sequelize = require("sequelize");
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Admins', {
@@ -7,6 +10,9 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
+      },
+      isAdmin : {
+        type : sequelize.BOOLEAN
       },
       name: {
         type: Sequelize.STRING
