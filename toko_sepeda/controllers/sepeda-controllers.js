@@ -1,47 +1,48 @@
-const express = require('express')
+
 const Joi =require('joi') //untuk validasi data
 const {Sepeda} = require('../models') //mengambil model 
 
 module.exports = {
   createSepeda :async (req,res)=>{
     const body = req.body
-    const file = req.file 
+    const file = req.file
+   
     try {
-        const schema = Joi.object({  //schema mengisi validasi object sbb
-          vendorId :Joi.number().required(),
-          name : Joi.string().required(),
-          harga : Joi.number().required(),
-          stock : Joi.number().required(),
-          gambar : Joi.string().required()
+      const schema = Joi.object({  //schema mengisi validasi object sbb
+        vendorId :Joi.number().required(),
+        name : Joi.string().required(),
+        harga : Joi.number().required(),
+        gambar : Joi.string().required(),
+        stock : Joi.number().required()
+      })
+
+      const {error} = schema.validate({
+            ...body,
+            gambar : file.path
+          }) //menvaldiasi body dan file path
+      if (error){
+        return res.status(400).json({
+          status : "Check inputan data",
+          message : error.message
         })
-  
-        const {error} = schema.validate({ //menvaldiasi body dan file path
-              ...body,
-              gambar  : file.path
-        }) 
-        if (error){
-          return res.status(400).json({
-            status : "Check data yang diinput",
-            message : error.message
-          })
-        }
-        const sepeda = await Sepeda.create({
-          ...body, //spread operator ( seluruh body yg ada masuk ke ...body)
-          gambar : file.path //image diisi file.path
+      }
+      const sepeda = await Sepeda.create({
+        ...body, //spread operator ( seluruh body yg ada masuk ke ...body)
+        gambar : file.path //image diisi file.path
+      })
+      
+      if (!sepeda){
+        return res.status(500).json({
+          status : "Error pada saat create data ke laptop", 
+          message : "failed to created data laptop",
+          result : {}
         })
-        
-        if (!sepeda){
-          return res.status(500).json({
-            status : "Error pada saat create data sepeda", 
-            message : "failed to created data sepeda",
-            result : {}
-          })
-        }
-        return res.status(201).json({
-          status : "Success",
-          message : "Successfully created data sepeda",
-          result : sepeda
-        })
+      }
+      return res.status(201).json({
+        status : "Success",
+        message : "Successfully created data laptop",
+        result : sepeda
+      })
     } catch (error) {
       return res.status(500).json({
         status : "Internal server error pada saat mengambil data sepeda",
