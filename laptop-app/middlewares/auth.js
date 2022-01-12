@@ -19,7 +19,7 @@ module.exports ={
       const decoded = jwt.verify(token, process.env.SECRET_TOKEN)  //mendekripsi token, ( mengambil value email dan passowrd)
       const user = await Users.findByPk(decoded.id) //mencari di table user berdasarkan token ( decoded.id)
       if(!user){
-        return res.statu(401).jscon({
+        return res.status(401).json({
           status : "Unauthorized",
           message : "User not found",
           result : {}
@@ -54,7 +54,7 @@ module.exports ={
       const decoded = jwt.verify(token, process.env.SECRET_TOKEN)  //mendekripsi token, ( mengambil value email dan passowrd)
       const user = await Users.findByPk(decoded.id) //mengamnbil database user berdasarkan token ( decoded.id)
       if(!user){
-        return res.status(401).jscon({
+        return res.status(401).json({
           status : "Unauthorized",
           message : "User not found",
           result : {}

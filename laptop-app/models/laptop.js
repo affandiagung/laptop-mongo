@@ -11,6 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Laptop.belongsTo(models.Brand,{as : "brand",foreignKey :"brandId"}) //1 to 1 , laptop bagian dari brand
+      // Laptop.belongsToMany(models.Users, {as:"likes",through : "LaptopLike"})
     }
   };
   Laptop.init({

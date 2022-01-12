@@ -1,6 +1,6 @@
 const express = require ('express')
 const Joi = require('joi') //untuk validasi data
-const {Brand} = require ('../models')
+const {Brand,Laptop} = require ('../models')
 const catchHandler = require ('../utils/catch-handler')
 module.exports = {
   createBrand : async (req,res) => {
@@ -35,13 +35,16 @@ module.exports = {
     }
   },
   getBrands : async (req,res) =>{
-    
-    try {
+        try {
       const brands = await Brand.findAll({
         limit : 10,
-         order : [
-           ["createdAt", "DESC"]
-         ]
+         order : [["createdAt", "DESC"]],
+         include : [{
+           model : Laptop,
+           as :"laptops",
+           attributes : ["name","price","stock"]
+         }],
+        
       });
       
       if(brands.length == 0){

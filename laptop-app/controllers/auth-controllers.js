@@ -66,28 +66,30 @@ module.exports = {
         const {error} = schema.validate({...req.body})
         if (error){
           res.status(400).json({
-            status : "Bad Request aja",
+            status : "Coba check input data",
             message : error.message
           })
         }
-        const user = await Users.findOne({ where :{ email }}) //mengambil data dari data base
+        console.log(email)
         
+        const user = await Users.findOne({ where :{ email }}) //mengambil data dari data base
+        console.log(user)
         if(!user){
           return res.status(201).json({
-            status :"Unauthorized",
-            message : "Invalid email or password",
+            status :"Tidak boleh login",
+            message : "Email tidak terdaftar",
             result : {}
           })
         }
         const isValid = await bcrypt.compare(password, user.password)
+      
         if (!isValid){
           return res.status(201).json({
-            status :"Unauthorized",
-            message : "Invalid email or password",
+            status :"Tidak boleh login",
+            message : "Password salah",
             result : {}
           })
         }
-        
         const token = jwt.sign({
           email : user.email,
           id : user.id
