@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Sepeda.belongsTo(models.Vendor,{as : "vendor",foreignKey :"vendorId"}) // telling that this sepeda connect to vendor dengan fk : vendorId
     }
   };
   Sepeda.init({

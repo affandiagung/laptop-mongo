@@ -1,7 +1,8 @@
 const Joi = require('joi')
 const jwt = require ('jsonwebtoken')
-const {Admins} = require('../models')
+const {Admins,Profile} = require('../models')
 const bcrypt = require('bcrypt')
+
 
 
 module.exports = {
@@ -114,6 +115,18 @@ module.exports = {
       try {
        const admins = await Admins.findAll ({
           order : [["createdAt",'DESC']],
+          attributes : {
+            exclude : ["password","createdAt","updatedAt"]  
+          },
+          include : [
+            {
+              model : Profile,
+              as : "profile",
+              attributes : {
+                exclude : ["id","createdAt","updatedAt"]  
+              }
+            }
+          ],
        })
         
        if(admins.length ==0){

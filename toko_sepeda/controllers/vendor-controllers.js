@@ -1,5 +1,5 @@
 const Joi =require('joi') //untuk validasi data
-const {Vendor} = require('../models') //mengambil model 
+const {Vendor,Sepeda} = require('../models') //mengambil model 
 
 
 module.exports = {
@@ -7,6 +7,18 @@ module.exports = {
     try {
      const vendors = await Vendor.findAll ({
         order : [["createdAt",'DESC']],
+        include : [ 
+          {
+            model : Sepeda,
+            as : "sepedas",
+            attributes : {
+              exclude : ["vendorId","id","createdAt","updatedAt"]  
+            }
+          }
+        ],
+        attributes : {
+          exclude : ["vendorId","id","createdAt","updatedAt"]  
+        }
      })
       
      if(vendors.length ==0){
@@ -34,6 +46,18 @@ module.exports = {
       const vendor = await Vendor.findOne ({
         where : {
           id
+        },
+        include : [ 
+          {
+            model : Sepeda,
+            as : "sepedas",
+            attributes : {
+              exclude : ["vendorId","id","createdAt","updatedAt"]  
+            }
+          }
+        ],
+        attributes : {
+          exclude : ["vendorId","id","createdAt","updatedAt"]  
         }
      })
      
@@ -163,7 +187,7 @@ module.exports = {
       })
     } catch (error) {
       return res.status(500).json({
-        status : "error",
+        status : "Internal Server Error pada saat mengapus data vendor",
         message : error.message
       })
     }

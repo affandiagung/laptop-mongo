@@ -1,6 +1,6 @@
 
 const Joi =require('joi') //untuk validasi data
-const {Sepeda} = require('../models') //mengambil model 
+const {Sepeda,Vendor} = require('../models') //mengambil model 
 
 module.exports = {
   createSepeda :async (req,res)=>{
@@ -55,6 +55,18 @@ module.exports = {
     try {
      const sepedas = await Sepeda.findAll ({
         order : [["createdAt",'DESC']],
+        include : [
+          {
+            model : Vendor,
+            as : "vendor",
+            attributes : {
+              exclude : ["id","createdAt","updatedAt"]  
+            }
+          }
+        ],
+        // attributes : {
+        //   exclude : ["brandId","id","createdAt","updatedAt"]  
+        // }
      })
       
      if(sepedas.length ==0){
@@ -75,5 +87,76 @@ module.exports = {
         result :{}
       })
     }
-  }  
+  } ,
+  getSepedaById :async (req,res)=>{
+    const {sepedaId} = req.params
+    try {
+     const sepedas = await Sepeda.findOne ({
+       where : {
+        id : sepedaId
+       },
+        order : [["createdAt",'DESC']],
+        include : [
+          {
+            model : Vendor,
+            as : "vendor",
+            attributes : {
+              exclude : ["id","createdAt","updatedAt"]  
+            }
+          }
+        ],
+        // attributes : {
+        //   exclude : ["brandId","id","createdAt","updatedAt"]  
+        // }
+     })
+      
+     if(!sepedas){
+       return res.status(404).json({
+         status : "Tidak ada data yg bisa ditampilkan",
+         message : "Data dengan Id " + sepedaId +  " tidak ditemukan"
+       })
+     }
+     return res.status(200).json({
+       status : "Success",
+       message : "Berhasil mengambil data vendor dari database",
+       result : sepedas
+     })
+    } catch (error) {
+      res.status(500).json({
+        status : "Koneksi gagal",
+        message : error.message,
+        result :{}
+      })
+    }
+  } ,
+  deleteSepeda : async (req,res)=>{
+    const {sepedaId} = req.params
+    try {
+      
+      const sepeda = await Sepeda.destroy({
+        where :{
+          id : sepedaId
+        }
+      })
+      
+      if(!sepeda) {
+        return res.status(404).json({
+          status  :"Data gagal dihapus",
+          message :"Data sepeda dengan id " + sepedaId + " tidak ada",
+          result:{}
+
+        })
+      }
+      res.status(200).json({
+        status : "success",
+        message : "Successfully delete the data where id " + sepedaId,
+        result : {}
+      })
+    } catch (error) {
+      return res.status(500).json({
+        status : "Internal Server Error pada saat mengapus data vendor",
+        message : error.message
+      })
+    }
+  }
 }
