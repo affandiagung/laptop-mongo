@@ -1,7 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const app = express()
-const port = 5000
+const port = 8000
 const route = require('./routes')
 
 app.use(express.json()) //agar dapat membaca body yg dikirimkan oleh user( body parser)

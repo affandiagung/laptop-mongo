@@ -16,13 +16,14 @@ module.exports ={
 
       
       const upload = multer({storage }).single(fieldname) // setting upload, mengupload single atau array ( didokmentasi multer npm)
-      console.log(upload)
+     
       return ( req,res,next)=>{
         upload(req,res,(err)=>{ //middleware ,3 argument, reg res, err
           if( err){ //callback function
             
             return catchHandler (res,err)
           }
+          
           return next() //jika tidak error langsung next
         });
       };

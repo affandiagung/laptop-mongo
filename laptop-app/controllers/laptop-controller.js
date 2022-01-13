@@ -7,7 +7,7 @@ module.exports = {
   createLaptop : async (req,res) =>{
     const body = req.body
     const file = req.file
-   
+ 
     try {
       const schema = Joi.object({  //schema mengisi validasi object sbb
         brandId :Joi.number().required(),
