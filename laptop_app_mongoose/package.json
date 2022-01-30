@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "dotenv": "^13.0.1",
+    "express": "^4.17.2",
+    "mongoose": "^6.1.6"
+  },
+  "name": "laptop_app_mongoose",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "description": ""
+}

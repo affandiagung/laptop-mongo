@@ -1,11 +1,10 @@
 const mongoose = require('mongoose')
 
-module.exporst = ()=>{
-  mongoose.connect("uri",{},(error)=>{
-    if(error){
-      return console.log("Error has been occured")
+module.exports = ()=> {
+  mongoose.connect(process.env.URI_MONGODB,{},(error)=>{
+    if (error){
+      return console.log("failed to connected to mongodb")
     }
-    console.log("connect to mongoDB")
+    console.log("Connected to mongoDB")
   })
- 
 }
