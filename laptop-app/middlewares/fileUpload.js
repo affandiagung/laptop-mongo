@@ -1,5 +1,7 @@
 const multer = require('multer')
+const {CloudinaryStorage} = require('multer-storage-cloudinary')
 const catchHandler = require('../utils/catch-handler')
+const cloudinary = require('../config/cloudinary')
 
 module.exports ={
   uploadLocal : (fieldname) =>{
@@ -28,4 +30,31 @@ module.exports ={
         });
       };
     },
+  uploadCloud : (fieldName) =>{
+      //membuat atau setting storage dengan multer.diskStorage
+      const storage = new CloudinaryStorage({
+        cloudinary : cloudinary, //cloud yg sudah di buat di config
+        params : (req,file) =>{ //params isinya sebuah function yg mereturn sebuah object
+          return  {
+            folder : fieldName, //nama folder tergantung fieldName yg dibuat
+            resource_type  : "raw",
+            public_id : Date.now()+"-"+file.originalname, //nama file
+          }
+        }        
+        })
+  
+        
+        const upload = multer({storage }).single(fieldName) // setting upload, mengupload single atau array ( didokmentasi multer npm)
+       
+        return ( req,res,next)=>{
+          upload(req,res,(err)=>{ //middleware ,3 argument, reg res, err
+            if( err){ //callback function
+              
+              return catchHandler (res,err)
+            }
+            
+            return next() //jika tidak error langsung next
+          });
+        };
+      },
 };
