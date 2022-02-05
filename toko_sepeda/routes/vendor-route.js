@@ -5,8 +5,8 @@ const {isLoginAdmin} =require('../middlewares/admin')
 
 router.post("/",isLoginAdmin, createVendor)
 router.get("/",isLoginAdmin,getVendors)
-router.get("/:vendorId",isLoginAdmin,getVendor)
-router.put("/:vendorId",isLoginAdmin,updateVendor)
+router.get("/:vendorId",getVendor)
+router.put("/:vendorId",updateVendor)
 router.delete("/:vendorId",isLoginAdmin,deleteVendor)
 
 module.exports = router
